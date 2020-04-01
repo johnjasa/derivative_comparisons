@@ -11,8 +11,8 @@ import openmdao.api as om
 data = OrderedDict()
 data['Analytic Dense'] = None
 data['JAX Jacobian'] = None
-# data['Approximated'] = None
-# data['Approximated Colored'] = None
+data['Approximated'] = None
+data['Approximated Colored'] = None
 
 with open('timing_data.pkl', 'rb') as f:
     output_data = pickle.load(f)

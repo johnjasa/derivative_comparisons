@@ -12,10 +12,21 @@ class MatrixComp(om.ExplicitComponent):
         self.options.declare('random_seed', default=314)
         
     def setup(self):
-        self.add_input('x', shape=self.options['num_inputs'])
-        self.add_output('y', shape=self.options['num_outputs'])
+        num_inputs = self.options['num_inputs']
+        num_outputs = self.options['num_outputs']
+        bandwidth = self.options['bandwidth']
+        self.add_input('x', shape=num_inputs)
+        self.add_output('y', shape=num_outputs)
         
-        self.declare_partials('y', 'x')
+        rows = np.repeat(np.arange(num_outputs), bandwidth)
+        arange = np.arange(num_inputs)
+        cols = np.array([(arange + i)%num_inputs for i in range(bandwidth)]).flatten(order='F')
+        cols = np.tile(cols, int(np.ceil(num_outputs / num_inputs) + bandwidth))
+        cols = cols[:len(rows)]
+        
+        print(rows)
+        print(cols)
+        self.declare_partials('y', 'x', rows=rows, cols=cols)
         
         np.random.seed(self.options['random_seed'])
         self.random_array = np.random.random_sample(self.options['num_inputs'])
@@ -42,7 +53,9 @@ class MatrixComp(om.ExplicitComponent):
         x_and_random = x + self.random_array
         tiled_x = np.tile(x_and_random, int(np.ceil(num_outputs / num_inputs) + bandwidth))
         
+        i_counter = 0
         for i in range(num_outputs):
-            np.put(partials['y', 'x'][i], range(i, i+bandwidth), 4 * tiled_x[i:i+bandwidth]**3, mode='wrap')
+            partials['y', 'x'][i_counter:i_counter+bandwidth] = 4 * tiled_x[i:i+bandwidth]**3
+            i_counter += bandwidth
             
             

@@ -9,16 +9,15 @@ import openmdao.api as om
 from groups import MatrixGroup
 
 
-nns = [2**i for i in range(2, 8)]
+nns = [2**i for i in range(2, 5)]
 num_nns = len(nns)
 num_repeats = 10
 
 data = OrderedDict()
 data['Analytic Dense'] = np.zeros((num_nns, num_repeats))
 data['JAX Jacobian'] = np.zeros((num_nns, num_repeats))
-# data['Analytic Sparse'] = np.zeros((num_nns, num_repeats))
-# data['Approximated'] = np.zeros((num_nns, num_repeats))
-# data['Approximated Colored'] = np.zeros((num_nns, num_repeats))
+data['Approximated'] = np.zeros((num_nns, num_repeats))
+data['Approximated Colored'] = np.zeros((num_nns, num_repeats))
 
 timing_data = np.zeros((num_nns, len(data)))
 
@@ -45,12 +44,12 @@ for i_method, key in enumerate(data):
         prob.model = MatrixGroup(comp_type=MatrixComp, num_inputs=num_inputs, num_outputs=num_outputs, bandwidth=bandwidth, random_seed=random_seed)
         
         prob.setup()
+        prob.run_model()
         
         for i_repeat in range(num_repeats):
 
             pre_time = time()
             
-            prob.run_model()
             prob.compute_totals(['obj'], ['x'])
             
             post_time = time()

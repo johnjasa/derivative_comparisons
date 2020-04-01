@@ -48,8 +48,9 @@ class MatrixGroup(om.Group):
 
 if __name__ == "__main__":
     # from matrix_comp_jax import MatrixComp
-    from matrix_comp_analytic import MatrixComp
     # from matrix_comp_jax_jvp import MatrixComp
+    # from matrix_comp_analytic import MatrixComp
+    from matrix_comp_analytic_sparse import MatrixComp
 
     num_inputs = 5
     num_outputs = 8
