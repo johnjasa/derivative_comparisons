@@ -40,7 +40,7 @@ for i_method, key in enumerate(data):
         
     for i_nn, num_outputs in enumerate(nns):
         
-        if num_outputs > 60 and 'JAX' in key:
+        if num_outputs > 100 and 'JAX' in key:
             timing_data[i_nn, i_method] = np.nan
             continue
         
