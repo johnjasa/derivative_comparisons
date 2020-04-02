@@ -9,12 +9,13 @@ import openmdao.api as om
 from groups import MatrixGroup
 
 
-nns = [2**i for i in range(2, 5)]
+nns = [2**i for i in range(4, 14)]
 num_nns = len(nns)
 num_repeats = 10
 
 data = OrderedDict()
 data['Analytic Dense'] = np.zeros((num_nns, num_repeats))
+data['Analytic Sparse'] = np.zeros((num_nns, num_repeats))
 data['JAX Jacobian'] = np.zeros((num_nns, num_repeats))
 data['Approximated'] = np.zeros((num_nns, num_repeats))
 data['Approximated Colored'] = np.zeros((num_nns, num_repeats))
@@ -28,10 +29,20 @@ for i_method, key in enumerate(data):
     
     if key == 'Analytic Dense':
         from matrix_comp_analytic import MatrixComp
+    if key == 'Analytic Sparse':
+        from matrix_comp_analytic_sparse import MatrixComp
     if key == 'JAX Jacobian':
         from matrix_comp_jax import MatrixComp
+    if key == 'Approximated':
+        from matrix_comp_approx import MatrixComp
+    if key == 'Approximated Colored':
+        from matrix_comp_approx_colored import MatrixComp
         
     for i_nn, num_outputs in enumerate(nns):
+        
+        if num_outputs > 60 and 'JAX' in key:
+            timing_data[i_nn, i_method] = np.nan
+            continue
         
         print('Running {} cases of {} num_outputs'.format(num_repeats, num_outputs))
         

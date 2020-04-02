@@ -24,8 +24,6 @@ class MatrixComp(om.ExplicitComponent):
         cols = np.tile(cols, int(np.ceil(num_outputs / num_inputs) + bandwidth))
         cols = cols[:len(rows)]
         
-        print(rows)
-        print(cols)
         self.declare_partials('y', 'x', rows=rows, cols=cols)
         
         np.random.seed(self.options['random_seed'])

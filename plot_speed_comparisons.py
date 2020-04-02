@@ -10,6 +10,7 @@ import openmdao.api as om
 
 data = OrderedDict()
 data['Analytic Dense'] = None
+data['Analytic Sparse'] = None
 data['JAX Jacobian'] = None
 data['Approximated'] = None
 data['Approximated Colored'] = None
