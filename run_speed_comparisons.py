@@ -9,7 +9,7 @@ import openmdao.api as om
 from groups import MatrixGroup
 
 
-random_seed = 314
+random_seed = 123
 
 
 keys = ['num_outputs', 'num_inputs', 'bandwidth']
@@ -24,7 +24,7 @@ for comparison_type in comparison_type_keys:
         bandwidth = 2    
         
         if comparison_type == 'total_derivs':
-            num_repeats = 30
+            num_repeats = 40
             if 'output' in varied_term:
                 nns = [2**i for i in range(2, 12)]
             elif 'input' in varied_term:
@@ -82,9 +82,6 @@ for comparison_type in comparison_type_keys:
                         continue
                 else:
                     if nn > 50 and 'JAX' in key and 'output' in varied_term:
-                        timing_data[i_nn, i_method] = np.nan
-                        continue
-                    elif nn > 20 and 'JAX' in key and 'bandwidth' in varied_term:
                         timing_data[i_nn, i_method] = np.nan
                         continue
                 
