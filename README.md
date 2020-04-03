@@ -41,6 +41,12 @@ This study should inform the use of certain methods for WISDEM derivative develo
 
 ## Problem setup
 
+![Problem setup](problem_setup.png)
+
+![Jacobian explanation](jacobian.png)
+
+
+
 ## Results
 
 ![All results figures](all_plots.png)
@@ -51,13 +57,14 @@ This study should inform the use of certain methods for WISDEM derivative develo
 
 ![Total derivative outputs](total_derivs_num_outputs.png)
 
-![Total derivative bandwidth](total_derivs_num_bandwidth.png)
+![Total derivative bandwidth](total_derivs_bandwidth.png)
 
-![Total derivative inputs](total_derivs_num_inputs.png)
 
-![Total derivative outputs](total_derivs_num_outputs.png)
+![Optimization inputs](opt_num_inputs.png)
 
-![Total derivative bandwidth](total_derivs_num_bandwidth.png)
+![Optimization outputs](opt_num_outputs.png)
+
+![Optimization bandwidth](opt_num_bandwidth.png)
 
 ## Future work
 
