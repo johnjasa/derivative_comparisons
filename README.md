@@ -41,9 +41,24 @@ This study should inform the use of certain methods for WISDEM derivative develo
 
 ## Problem setup
 
-![Problem setup](problem_setup.png)
+To compare these derivative computation methods, we need a representative system implemented in OpenMDAO.
+This system should be easily scalable so we can see how problem size affects computation cost.
+Using an existing subsystem from WISDEM would be the most representative, but few of those are easily scalable and differentiable.
 
-![Jacobian explanation](jacobian.png)
+Instead, we use a straightforward system that consists of two components, shown schematically in the first image below.
+The first component takes in a vector `x` and performs a simple multiplication and summation to produce the vector `y`.
+We can control the size of `x` and the size of `y` using `num_inputs` and `num_outputs`, respectively.
+The second component in this system simply takes `y` and sums all values in the array to produce a scalar quantity, `obj`.
+This mimics the subsystems in WISDEM that produce the objective quantity, whatever that is.
+
+![Problem setup](problem_setup.jpg)
+
+The Jacobian of the first component, the array of derivatives of the outputs with respect to the inputs, is shown in the figure below.
+We can control the size, shape, and sparsity of the Jacobian by changing the values for `num_inputs`, `num_outputs`, and `bandwidth`.
+`bandwidth` changes how many of the `x` values are used to produce one entry in the `y` array.
+We can see how different derivative computation methods scale by changing the Jacobian sparsity.
+
+![Jacobian explanation](jacobian.jpg)
 
 
 
@@ -64,7 +79,7 @@ This study should inform the use of certain methods for WISDEM derivative develo
 
 ![Optimization outputs](opt_num_outputs.png)
 
-![Optimization bandwidth](opt_num_bandwidth.png)
+![Optimization bandwidth](opt_bandwidth.png)
 
 ## Future work
 
