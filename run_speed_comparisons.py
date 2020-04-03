@@ -10,7 +10,7 @@ from groups import MatrixGroup
 
 
 random_seed = 314
-num_repeats = 1
+
 
 keys = ['num_outputs', 'num_inputs', 'bandwidth']
 
@@ -24,6 +24,7 @@ for comparison_type in comparison_type_keys:
         bandwidth = 2    
         
         if comparison_type == 'total_derivs':
+            num_repeats = 30
             if 'output' in varied_term:
                 nns = [2**i for i in range(2, 12)]
             elif 'input' in varied_term:
@@ -33,6 +34,7 @@ for comparison_type in comparison_type_keys:
                 num_inputs = 200
                 num_outputs = 100
         elif comparison_type == 'opt':
+            num_repeats = 5
             if 'output' in varied_term:
                 nns = [2**i for i in range(2, 12)]
             elif 'input' in varied_term:
