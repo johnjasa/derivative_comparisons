@@ -51,5 +51,8 @@ class MatrixComp(om.ExplicitComponent):
         bandwidth = self.options['bandwidth']
         x = inputs['x']
     
-        partials['y', 'x'] = jax.jacobian(compute_func)(x, self.random_array, num_inputs, num_outputs, bandwidth)
+        if num_inputs > num_outputs:
+            partials['y', 'x'] = jax.jacrev(compute_func)(x, self.random_array, num_inputs, num_outputs, bandwidth)
+        else:
+            partials['y', 'x'] = jax.jacfwd(compute_func)(x, self.random_array, num_inputs, num_outputs, bandwidth)
     
