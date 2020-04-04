@@ -51,18 +51,33 @@ We can control the size of `x` and the size of `y` using `num_inputs` and `num_o
 The second component in this system simply takes `y` and sums all values in the array to produce a scalar quantity, `obj`.
 This mimics the subsystems in WISDEM that produce the objective quantity, whatever that is.
 
-![Problem setup](problem_setup.jpg)
+<p align="center">
+  <img src="problem_setup.jpg" alt="Problem setup" width="500"/>
+</p>
 
 The Jacobian of the first component, the array of derivatives of the outputs with respect to the inputs, is shown in the figure below.
 We can control the size, shape, and sparsity of the Jacobian by changing the values for `num_inputs`, `num_outputs`, and `bandwidth`.
 `bandwidth` changes how many of the `x` values are used to produce one entry in the `y` array.
 We can see how different derivative computation methods scale by changing the Jacobian sparsity.
 
-![Jacobian explanation](jacobian.jpg)
+<p align="center">
+  <img src="jacobian.jpg" alt="Jacobian explanation" width="500"/>
+</p>
 
 
 
 ## Results
+
+**In short, analytic methods are the fastest across the board, then approximation schemes, then JAX. Advanced features of JAX have not been implemented here due to the learning curve.**
+
+The figure below shows results for the five differentiation methods across six separate studies.
+The top row shows the time required to compute the total derivatives of the system once, whereas the bottom row shows the total cost of a simple optimization problem using the system.
+The first column varies the number of outputs from the first component, the second column varies the number of inputs/optimization design variables, and the final column varies the Jacobian bandwidth.
+In each case, when one quantity is varied, the other two are held fixed.
+
+All methods show a strong dependence on the number of outputs.
+JAX scales well with the number of inputs, whereas the other methods' optimization costs increase.
+Most methods are relatively insensitive to Jacobian bandwidth, and we see the approximated coloring method increase slightly as fewer colors can be used, leading to greater computational cost.
 
 ![All results figures](all_plots.png)
 
