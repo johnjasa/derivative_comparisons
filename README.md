@@ -46,7 +46,7 @@ This system should be easily scalable so we can see how problem size affects com
 Using an existing subsystem from WISDEM would be the most representative, but few of those are easily scalable and differentiable.
 
 Instead, we use a straightforward system that consists of two components, shown schematically in the first image below.
-The first component takes in a vector `x` and performs a simple multiplication and summation to produce the vector `y`.
+The first component takes in a vector `x` and performs a simple analytic multiplication and summation to produce the vector `y`.
 We can control the size of `x` and the size of `y` using `num_inputs` and `num_outputs`, respectively.
 The second component in this system simply takes `y` and sums all values in the array to produce a scalar quantity, `obj`.
 This mimics the subsystems in WISDEM that produce the objective quantity, whatever that is.
@@ -64,11 +64,14 @@ We can see how different derivative computation methods scale by changing the Ja
   <img src="jacobian.jpg" alt="Jacobian explanation" width="500"/>
 </p>
 
-
+Due to the simple nature of this system, this study only compares partial derivative computation methods.
+Total derivative approximation is not studied here, but is used in WISDEM run cases, so that will be investigated in future work.
+We compare five methods of partial derivative computation on the first component above.
+In each approximation case, we are using real finite differencing, not complex step, as some of the methods in WISDEM are not complex-safe.
 
 ## Results
 
-**In short, analytic methods are the fastest across the board, then approximation schemes, then JAX. Advanced features of JAX have not been implemented here due to the learning curve.**
+**In short, analytic methods are the fastest across the board, then approximation schemes, then JAX. Advanced features of JAX have not been implemented here due to the learning curve, but those could enhance AD performance.**
 
 The figure below shows results for the five differentiation methods across six separate studies.
 The top row shows the time required to compute the total derivatives of the system once, whereas the bottom row shows the total cost of a simple optimization problem using the system.
