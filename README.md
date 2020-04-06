@@ -79,23 +79,39 @@ All methods show a strong dependence on the number of outputs.
 JAX scales well with the number of inputs, whereas the other methods' optimization costs increase.
 Most methods are relatively insensitive to Jacobian bandwidth, and we see the approximated coloring method increase slightly as fewer colors can be used, leading to greater computational cost.
 
+Based on these results, it seems there is significant overhead to the JAX computation, leading it to be uncompetitive for extremely low-cost functions.
+With more expensive `compute()` functions, the cost trends for JAX would be different.
+
+The trends for optimization cost are different than those for only total derivative computation for a few reasons; there's additional overhead in the optimization process, the number of degrees of freedom in design affect convergence, and depending on derivative accuracy the optimization may take more or fewer iterations.
+
 ![All results figures](all_plots.png)
 
 
+Next, we'll highlight some of these plots individually and discuss their trends.
+
+First, total derivative cost scaling with number of inputs.
+Because we use the adjoint (reverse) method with the analytic derivatives, there is little-to-no increase in cost as we increase the number of inputs.
+Both approximation schemes' cost increases with the number of inputs because they are inherently forward methods, but the colored approximation scales sublinearly by taking advantage of the sparsity pattern of the Jacobian.
+JAX is able to use the reverse method which leads to a similar flat trend as the analytic methods, but it is inherently about two orders of magnitude more expensive.
 
 ![Total derivative inputs](total_derivs_num_inputs.png)
 
+All methods exhibit similar scaling as we increase the number of outputs, though JAX is generally 1-2 orders of magnitude more expensive.
+As we increase the number of outputs, the number of inputs remains the same, so the coloring scheme is not faster than the normal approximation scheme.
+
 ![Total derivative outputs](total_derivs_num_outputs.png)
+
+Most methods are flat as we increase the bandwidth of the Jacobian, but the approximated colored method slightly increases as we need to use more colors to compute the Jacobian.
 
 ![Total derivative bandwidth](total_derivs_bandwidth.png)
 
 
-![Optimization inputs](opt_num_inputs.png)
-
-![Optimization outputs](opt_num_outputs.png)
-
-![Optimization bandwidth](opt_bandwidth.png)
 
 ## Future work
 
-
+This is a glimpse at how these derivative computation methods perform for a specific and simple problem.
+These trends wouldn't necessarily hold for all functions or problems.
+There are a few interesting avenues for future work, including:
+- Use a `compute()` function from a WISDEM component for a more relevant comparison
+- Set up a group with multiple components to compare total vs. partial derivative computation performance
+- Implement more advanced features of JAX, including vectorization and sparsity, to drive its cost down
